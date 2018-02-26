@@ -4,6 +4,7 @@ navbar:
   title: "Menyhert Kristof"
   left:
     - text: "Projects"
+      icon: fa-folder fa-lg
       href: projects.html
     
   right:
