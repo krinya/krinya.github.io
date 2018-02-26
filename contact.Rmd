@@ -1,0 +1,13 @@
+---
+Title: "Contact"
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+### Contacts:
+
+E-mail: [menyhert.kristof@gmail.com](mailto:menyhert.kristof@gmail.com)
+
+Telephone: +36304725455  
+
+[Github](https://github.com/krinya)

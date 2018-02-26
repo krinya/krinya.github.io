@@ -1,0 +1,17 @@
+---
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<img src="images/krinya.jpg" style="width:20%; border:3px solid; margin-right: 3px" align="left">
+
+<style>
+body {
+text-align: justify}
+</style>
+
+I like to analyze data to answer research questions and test hypotheses. Currently I am a student at [Central European University](https://www.ceu.edu/), Budapest where I am doing my MsC studies at the [Business Analytics](https://economics.ceu.edu/program/master-science-business-analytics) course. 
+
+I created this page to show some of my works which I have done during my university studies. You can access them by clicking "projects" on the top of the page.
+
+My full CV is available [here](files/CV_menyhert_kristof_2018_02.pdf).

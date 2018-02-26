@@ -1,0 +1,29 @@
+---
+Title: "Projects"
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+### Machine Learning:
+
+#### HW1
+[Description](ml_homework_1.html)  
+[Solution](kristof_menyhert_machinelearnig_hw1.html)
+
+#### HW2
+[Description](ml_homework_2.html)  
+[Solution](kristof_menyhert_machinelearnig_hw2.html)
+
+#### HW3
+[Description](ml_homework_3.html)  
+[Solution](kristof_menyhert_machinelearnig_hw3.html)
+
+### Data Analysis:
+
+#### HW1
+[Description](DA4_Assignment1.pptx)  
+[Solution](menyhert_kristof_da4_hw1.html)
+
+#### HW2
+[Description](DA4_Assignment2-pptx)  
+[Solution](menyhert_kristof_da4_hw2.html)
