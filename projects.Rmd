@@ -25,5 +25,9 @@ Title: "Projects"
 [Solution](menyhert_kristof_da4_hw1.html)
 
 #### HW2
-[Description](DA4_Assignment2-pptx)  
+[Description](DA4_Assignment2.pptx)  
 [Solution](menyhert_kristof_da4_hw2.html)
+
+### Other:
+
+[Crypto example](jo_crypto_v1.html)
