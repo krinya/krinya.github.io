@@ -30,4 +30,5 @@ Title: "Projects"
 
 ### Other:
 
-[Crypto example](jo_crypto_v1.html)
+[Crypto example](jo_crypto_v1.html)  
+[A Dashboard what I made for a competition](https://krinya.shinyapps.io/OTP_verseny/)
