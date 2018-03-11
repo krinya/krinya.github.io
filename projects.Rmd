@@ -6,25 +6,25 @@ Title: "Projects"
 
 ### Machine Learning:
 
-#### HW1
+#### HW1 - Validattion Set, Predicting salaries
 [Description](ml_homework_1.html)  
 [Solution](kristof_menyhert_machinelearnig_hw1.html)
 
-#### HW2
+#### HW2 - Classification Problem, Predict no-show rate
 [Description](ml_homework_2.html)  
 [Solution](kristof_menyhert_machinelearnig_hw2.html)
 
-#### HW3
+#### HW3 - Clustering, PCA
 [Description](ml_homework_3.html)  
 [Solution](kristof_menyhert_machinelearnig_hw3.html)
 
+#### HW4 - Random Forest, Boosting, XBoost
+[Description](ml_homework_4.html)  
+[Solution](kristof_menyhert_machinelearnig_II_hw1.html)
+
 ### Data Analysis:
 
-#### HW1
-[Description](DA4_Assignment1.pptx)  
-[Solution](menyhert_kristof_da4_hw1.html)
-
-#### HW2
+#### HW2 - Predicting bankrupcy rates
 [Description](DA4_Assignment2.pptx)  
 [Solution](menyhert_kristof_da4_hw2.html)
 
