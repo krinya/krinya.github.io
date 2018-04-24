@@ -14,4 +14,4 @@ I like to analyze data to answer research questions and test hypotheses. Current
 
 I created this page to show some of my works which I have done during my university studies. You can access them by clicking "projects" on the top of the page.
 
-My full CV is available [here](files/CV_menyhert_kristof_2018_02.pdf).
+My full CV is available [here](files/kristof_menyhert_cv.pdf).
