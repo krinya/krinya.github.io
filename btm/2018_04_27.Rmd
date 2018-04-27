@@ -1,0 +1,207 @@
+---
+title: "BTM short notes"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Who am I?
+
+- Kristóf
+- contact: menyhert.kristof@gmail.com or Slack
+- I have studied here at CEU - Business Analytics
+    - ML, Statistics + some Business Stuff
+    - I use R (sw for statistics)
+- Worked for 2 years (Insurance sector - Pricing analyst)
+- doing my capstone project here at BrokerChooser
+- personal website: https://krinya.github.io/
+
+## What I do here?/ What is my project?
+
+- I analyze the data of questionnaires collected from BC's website 
+- Aim: Improve the recommendation algo
+- 1st: simple statistics (e.g.: histograms)
+- Then: machine learning models
+- How? I don't know yet -> will turn out later
+
+## Example nr1: | Distribution of the responses for the 1st question
+```{r, message=FALSE, warning= FALSE, echo=FALSE}
+library(data.table)
+library(ggplot2)
+library(tidyr)
+library(splitstackshape)
+library(gridExtra)
+library(caret)
+library(scales)
+library(rattle)
+library(kableExtra)
+library(knitr)
+library(DT)
+library(randomForest)
+library(rpart)
+library(stringr)
+library(rpart.plot)
+library(tidyverse)
+library(alluvial)
+library(plotly)
+
+data <- fread("C:/Users/Chronos/OneDrive - Central European University/final_project/raw.csv")
+broker_order <- fread("C:/Users/Chronos/OneDrive - Central European University/final_project/broker_list.csv")
+
+#rename columns:
+names(data) <- c(
+  'segment', 'country', 'fill_id', 'how_independent', 'trading_exp', 'how_much_money', 'how_often', 'market', 'product', 'investor_protection', 'questionnaire_fills', 'etoro', 'degiro', 'oanda', 'saxo', 'interactive', 'internaxx', 'swiss', 'comdirect', 'bgl', 'ig_com', 'markets_com', 'plus500', 'tastyworks', 'strateo', 'tradestation', 'peperstone'
+)
+
+#create no_broker variable to count the numbers who who did choose any broker:
+
+data[,no_broker := questionnaire_fills - etoro - degiro - oanda - saxo - interactive - internaxx - swiss - comdirect - bgl - ig_com - markets_com - plus500 - tastyworks - strateo - tradestation - peperstone]
+
+data[, c('questionnaire_fills') := NULL] # drop questionnare_fill column
+data[no_broker < 0, no_broker:= 0]
+
+#create long format
+data_long <- gather(data, broker, darab, etoro:no_broker) 
+data_long <- data.table(data_long)
+data_long <- data_long[darab > 0]
+
+data_spread <- expandRows(data_long, "darab")
+
+data_spread <- data.table(data_spread)
+
+data_spread <- data_spread[product != ""] #4 db üres van
+
+data_spread[how_independent == "I make the decisions myself on where to put my money.", how_independent:= "I make the decisions myself \n on where to put my money."]
+data_spread[how_independent == "I am interested in following other trader's strategy (social trading).", how_independent:= "I am interested in following other\n trader's strategy (social trading)."]
+data_spread[how_independent == "I might need to consult a broker every now and then.", how_independent:= "I might need to consult a\n broker every now and then."] 
+data_spread[how_independent == "I want a professional to manage my money.", how_independent:= "I want a professional \n to manage my money."]
+
+data_spread[trading_exp == "I know the basics (e.g. already traded with stocks)", trading_exp:= "I know the basics\n(e.g. already traded with stocks)"]
+data_spread[trading_exp == "I am a beginner (e.g. had only funds so far)", trading_exp:= "I am a beginner\n(e.g. had only funds so far)"]
+data_spread[trading_exp == "I can deal with more complex transactions (e.g. placing a stop-loss order)", trading_exp:= "I can deal with more complex transactions\n(e.g. placing a stop-loss order)"] 
+data_spread[trading_exp == "I am a professional (e.g. trading with options, futures)", trading_exp:= "I am a professional\n(e.g. trading with options, futures)"]
+
+data_spread[how_often == "Buy and hold: after buying a stock I would hold it in the medium term", how_often:= "Buy and hold: after buying a stock I\nwould hold it in the medium term"]
+data_spread[how_often == "I trade on a daily basis", how_often:= "I trade on a daily basis"]
+data_spread[how_often == "I keep an eye on the markets and trade every few weeks", how_often:= "I keep an eye on the markets\nand trade every few weeks"]
+
+data_spread[investor_protection == "I need investor protection but riskier countries are fine as well (e.g. Cyprus, Malta)", investor_protection:= "I need investor protection\nbut riskier countries are\nfine as well (e.g. Cyprus, Malta)"]
+data_spread[investor_protection == "I want the investor protection of a country with minimum AA credit rating (e.g. USA, Switzerland)", investor_protection:= "I want the investor protection\nof a country with minimum AA\ncredit rating (e.g. USA, Switzerland)"]
+
+data_spread[market == "Itâ€™s ok to have access only to the major markets (e.g. USA, Japan, Hong Kong)", market:= "It is ok to have access\nonly to the major markets\n(e.g. USA, Japan, Hong Kong)"]
+data_spread[market == "I want to reach the smaller markets as well (e.g. South Africa, Turkey)", market:= "I want to reach the smaller markets\nas well (e.g. South Africa, Turkey)"]
+
+deafult_valaszok <- data.table(segment = c("starter","investor","trader"),
+                               deafult_how_independet = c("I might need to consult a\n broker every now and then.", "I make the decisions myself \n on where to put my money.", "I make the decisions myself \n on where to put my money."),
+                               deafult_trading_exp = c("I am a beginner\n(e.g. had only funds so far)", "I can deal with more complex transactions\n(e.g. placing a stop-loss order)", "I am a professional\n(e.g. trading with options, futures)"),
+                               deafult_how_much_money = c("less than 10.000 USD", "more than 10.000 USD", "more than 10.000 USD"),
+                               deafult_how_often = c("Buy and hold: after buying a stock I\nwould hold it in the medium term", "I keep an eye on the markets\nand trade every few weeks", "I trade on a daily basis"),
+                               deafult_market = c("It is ok to have access\nonly to the major markets\n(e.g. USA, Japan, Hong Kong)", "It is ok to have access\nonly to the major markets\n(e.g. USA, Japan, Hong Kong)", "I want to reach the smaller markets\nas well (e.g. South Africa, Turkey)"),
+                               deafult_product = c("simple investment products (e.g. funds, stocks)", "more sophisticated investment products (e.g. corporate bonds)", "leveraged products with higher risk (e.g. CFD, options)\nFX trade"),
+                               deafult_investor_protection = c("I want the investor protection\nof a country with minimum AA\ncredit rating (e.g. USA, Switzerland)", "I want the investor protection\nof a country with minimum AA\ncredit rating (e.g. USA, Switzerland)", "I want the investor protection\nof a country with minimum AA\ncredit rating (e.g. USA, Switzerland)")
+                               )
+
+data_spread <- merge(data_spread, deafult_valaszok, by = "segment")
+
+##### merge brokerek:
+
+data_spread <- merge(x=data_spread, y=broker_order, by.x="fill_id", by.y="V1")
+
+##### rename brokerek:
+#rename brokers in broker_order table:
+names(data_spread)[names(data_spread) == 'V2'] <- 'first_rec'
+names(data_spread)[names(data_spread) == 'V3'] <- 'sec_rec'
+names(data_spread)[names(data_spread) == 'V4'] <- 'third_rec'
+
+for (column in c("first_rec", "sec_rec", "third_rec")){
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Swissquote", "swiss")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "eToro", "etoro")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "DEGIRO", "degiro")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Saxo Bank", "saxo")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Interactive Brokers", "interactive")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Strateo", "strateo")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Strateo", "strateo")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Oanda", "oanda")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Internaxx", "internaxx")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Pepperstone", "peperstone")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Comdirect", "comdirect")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Tastyworks", "tastyworks")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "Tradestation", "tradestation")
+  data_spread[[column]] <- str_replace_all(data_spread[[column]], "IG", "ig_com")
+}
+
+ratio_table <- data_spread[]
+ratio_table[, broker_binary:= ifelse(broker == "no_broker", 0, 1)]
+
+valasz_eloszlas_kerdes <- function(data, kerdes, title = "cim", lab = "Válasz"){
+  kerdes_table <- data[, .(darab = .N), by = .(kerdes = get(kerdes))]
+  setnames(kerdes_table, "kerdes", kerdes)
+  kerdes_table[, osszeg:= sum(darab)]
+  kerdes_table[, arany:= darab/osszeg]
+  return(
+    ggplot(kerdes_table, aes(x=get(eval(kerdes)), y=arany)) + 
+      geom_bar(stat="identity", fill = "blue") +
+      coord_flip() +
+      theme_bw() + labs(x=lab, y="Arány", title = title)
+  )
+}
+
+valasz_eloszlas_kerdes_by_segment <- function(data, kerdes, title = "cim", lab = "Válasz", fill = "Segment"){
+  kerdes_table <- data[, .(darab = .N), by = .(kerdes = get(kerdes), segment)]
+  setnames(kerdes_table, "kerdes", kerdes)
+  kerdes_table[, darab_by_segment:= sum(darab), by = segment]
+  kerdes_table[, arany_by_segment:= darab/darab_by_segment]
+  return(
+    ggplot(kerdes_table, aes(x=get(kerdes), y=arany_by_segment)) + 
+      geom_bar(stat="identity", position = "dodge", aes(fill = segment)) + 
+      coord_flip() +
+      theme_bw() + labs(x=lab, y="Arány", title = title, fill = fill)
+  )
+}
+
+
+valasz_eloszlas_kerdes_by_segment_2 <- function(data, kerdes, deafult_kerdes, title = "cim"){
+  kerdes_table <- data[, .(darab = .N), by = .(segment,
+                                               kerdes = get(kerdes),
+                                               deafult_kerdes = get(deafult_kerdes))]
+  setnames(kerdes_table, "kerdes", kerdes)
+  setnames(kerdes_table, "deafult_kerdes", deafult_kerdes)
+  kerdes_table[, darab_by_segment:= sum(darab), by = segment]
+  kerdes_table[, arany_by_segment:= darab/darab_by_segment]
+  kerdes_table[, deafult_or_not:= ifelse(get(kerdes) == get(deafult_kerdes), 1, 0)]
+  
+  return(
+    ggplot(kerdes_table, aes(x=get(kerdes), y=arany_by_segment)) + 
+      geom_bar(stat="identity", aes(fill = as.factor(deafult_or_not))) + 
+      facet_wrap(~segment) +
+      coord_flip() +
+      theme_bw() + labs(title = title, x = "Válasz", y = "Arány") + theme(legend.position="none") +
+      scale_fill_manual(breaks = c("1", "0"), 
+                       values=c("red", "green"))
+  )
+}
+
+valasz_eloszlas_kerdes_by_segment_2(data_spread, "how_independent", "deafult_how_independet", title = "How independent are you?")
+
+```
+
+
+## Example nr2: | Which brokers are choosen by segment
+
+```{r, message=FALSE, warning= FALSE, echo=FALSE}
+broker_distribution <- data_spread[broker != "no_broker"][, .(darab=.N), by=broker][,osszes:= sum(darab)][,ratio:= darab/osszes]
+
+broker_distribution <- data_spread[broker != "no_broker"][, .(darab=.N), by=.(segment, broker)][,osszes:= sum(darab), by = segment][,ratio:= darab/osszes]
+
+ggplot(broker_distribution) +
+  geom_bar(aes(x = reorder(broker, ratio), y = ratio), stat = "identity", fill = "blue") +
+  facet_wrap(~segment) +
+  coord_flip() +
+  theme_bw() +
+  labs(x = "broker", y = "ratio", title = "The distribution of choosen brokers by segment")
+```
+
