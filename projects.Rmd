@@ -31,7 +31,7 @@ Title: "Projects"
 ## Python:
 
 #### 1st Project
-In this project I got a dataset about a marketing data of a bank to analyze it. [More information](http://archive.ics.uci.edu/ml/index.php)
+In this project I got a data about a marketing cnpaign of a bank to analyze it. [More information](http://archive.ics.uci.edu/ml/index.php)   
 [Solution](data_beadando_menyhert_kristof.html)
 
 ### Data Analysis:
