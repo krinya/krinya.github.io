@@ -28,7 +28,7 @@ Title: "Projects"
 [Description](ml_homework_5.html)  
 [Solution](kristof_menyhert_machinelearnig_II_hw2.html)
 
-## Python:
+### Python:
 
 #### 1st Project
 In this project I got a data about a marketing cnpaign of a bank to analyze it. [More information](http://archive.ics.uci.edu/ml/index.php)   
