@@ -4,7 +4,9 @@ Title: "Projects"
 
 <link rel="stylesheet" href="styles.css" type="text/css">
 
-### Machine Learning:
+## Machine Learning:
+
+### R:
 
 #### HW1 - Validattion Set, Predicting salaries
 [Description](ml_homework_1.html)  
@@ -25,6 +27,12 @@ Title: "Projects"
 #### HW5 - H2O, Deep Learning, Stacking
 [Description](ml_homework_5.html)  
 [Solution](kristof_menyhert_machinelearnig_II_hw2.html)
+
+## Python:
+
+#### 1st Project
+In this project I got a dataset about a marketing data of a bank to analyze it. [More information](http://archive.ics.uci.edu/ml/index.php)
+[Solution](data_beadando_menyhert_kristof.html)
 
 ### Data Analysis:
 
