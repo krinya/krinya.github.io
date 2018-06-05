@@ -28,10 +28,18 @@ Title: "Projects"
 [Description](ml_homework_5.html)  
 [Solution](kristof_menyhert_machinelearnig_II_hw2.html)
 
+#### Deep learning in R: MNIST example
+In this exercise I used a NN model in order to classify handwrittend numbers.  
+[solution](mnist_example_q1.html)
+
+#### Deep learning in R: classifying IMDB reviews
+In this example I used a NN model to classify IMDB reviews into two categories (postive/negative)  
+[Solution](imdb_example_q2.html)  
+
 ### Python:
 
 #### 1st Project
-In this project I got a data about a marketing cnpaign of a bank to analyze it. [More information](http://archive.ics.uci.edu/ml/index.php)   
+In this project I got a data about a marketing campaign of a bank to analyze it. [More information](http://archive.ics.uci.edu/ml/index.php)   
 [Solution](data_beadando_menyhert_kristof.html)
 
 ### Data Analysis:
