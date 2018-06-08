@@ -52,3 +52,4 @@ In this project I got a data about a marketing campaign of a bank to analyze it.
 
 [Crypto example](jo_crypto_v1.html)  
 [A Dashboard what I made for a competition](https://krinya.shinyapps.io/OTP_verseny/)
+[Link1](btm/modeling_part.html)
