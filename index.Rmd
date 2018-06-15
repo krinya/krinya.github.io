@@ -10,8 +10,8 @@ body {
 text-align: justify}
 </style>
 
-I like to analyze data to answer research questions and test hypotheses. Currently I am a student at [Central European University](https://www.ceu.edu/), Budapest where I am doing my MsC studies at the [Business Analytics](https://economics.ceu.edu/program/master-science-business-analytics) course. 
+I like to analyze data to answer research questions and test hypotheses. Currently I am finishing my studies  at [Central European University](https://www.ceu.edu/), Budapest where I have been doing my MsC studies at the [Business Analytics](https://economics.ceu.edu/program/master-science-business-analytics) course. 
 
-I created this page to show some of my works which I have done during my university studies. You can access them by clicking "projects" on the top of the page.
+I created this webpage to show some of my projects which I have done during my university studies. You can access them by clicking "projects" tab on the top of the page.
 
-My full CV is available [here](files/kristof_menyhert_cv.pdf).
+If you are intrested in my full CV, it is available [here](files/kristof_menyhert_cv.pdf).
