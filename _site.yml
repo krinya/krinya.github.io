@@ -1,23 +1,25 @@
-name: "Menyhert Kristof"
-output_dir: "."
+name: Menyhert Kristof
+output_dir: '.'
 navbar:
-  title: "Menyhert Kristof"
+  title: Menyhert Kristof
   left:
-    - text: "Projects"
-      icon: fa-folder fa-lg
-      href: projects.html
-    
+  - text: Projects
+    icon: fa-folder fa-lg
+    href: projects.html
   right:
-    - icon: fa-envelope fa-lg
-      text: "Contacts"
-      href: contact.html
-    - icon: fa-github fa-lg
-      href: http://github.com/krinya
-    - icon: fa-linkedin fa-lg
-      href: https://www.linkedin.com/in/krist%C3%B3f-menyhert/
-    - icon: fa-facebook fa-lg
-      href: https://www.facebook.com/minimal.krinya
+  - icon: fa-envelope fa-lg
+    text: Contacts
+    href: contact.html
+  - icon: fa-github fa-lg
+    href: http://github.com/krinya
+  - icon: fa-linkedin fa-lg
+    href: https://www.linkedin.com/in/krist%C3%B3f-menyhert/
+  - icon: fa-facebook fa-lg
+    href: https://www.facebook.com/minimal.krinya
 output:
   html_document:
     theme: paper
-    css: 'styles.css'
+    css: styles.css
+    lib_dir: site_libs
+    self_contained: no
+
