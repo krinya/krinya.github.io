@@ -1,0 +1,83 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+#Marathon records: A simple plot based on marathon records over time
+
+In this small notebook I will show how to make a simple plot using the ggplot package.
+
+I was interested about the marathon world record progression. After collected the data from the [Wikipedia](https://en.wikipedia.org/wiki/Marathon_world_record_progression) page about marathon records time I made a small script to be able to make a graph based on it.
+
+## Data collection
+Load the data and do some manipulation on it:
+```{r, warning=FALSE, warning=FALSE}
+library(data.table)
+library(readr)
+library(hms)
+library(ggplot2)
+library(ggrepel)
+
+data <- fread("C:/Users/menyh/Desktop/marathon.csv", header = T)
+data <- data[,c(1:5)]
+
+data$newdate <- parse_date(data$Date, "%B %d, %Y", locale = locale("en"))
+
+data$Time <- gsub("\\..*", "", data$Time)
+data$duration <- as.hms(data$Time)
+data$duration_hours  <- hour(data$duration)
+data$duration_seconds <- second(data$duration)
+data$duration_minutes <- minute(data$duration)
+
+data$all_minute <- data$duration_hours * 60 + data$duration_minutes + data$duration_seconds/60
+data$all_second <- data$duration_hours * 60 * 60 + data$duration_minutes * 60 + data$duration_seconds
+
+data$all_minute_log <- log(data$all_minute)
+```
+
+Now we have all the we need to create the plot. See the structure of our database below:
+```{r}
+head(data)
+```
+
+## Create the Plot:
+We are able to create a nice graph based on it. I will use `ggplot` to do this task.
+
+```{r, warning=FALSE, message=FALSE, fig.align='center'}
+ggplot(data, aes(x = newdate, y = duration)) +
+  geom_line(color = "blue") +
+  geom_point(color = "blue", alpha = 0.8) +
+  geom_smooth(se = F, color = "red", linetype = "dashed", alpha = 0.65)+
+  labs(title = "Marathon world record progression",
+       x = "Date",
+       y = "Time",
+       caption = "source: https://en.wikipedia.org/wiki/Marathon_world_record_progression") +
+  geom_hline(yintercept = 60*60*2, color = "grey") +
+  coord_cartesian(ylim = c(6800, 10500))  +
+  theme_bw()
+```
+
+What can we see on the graph?
+
+* There are observations where the time is less then the consecutive record, this is happening since the record was collected by more than one organization and not all records were certificated by all the organizations. See the Wikipedia page form more clarification.
+
+* The red dashed line is getting steeper, which means that the records are breaking with smaller and smaller margins
+
+* The theoretical human minimum time is around 2:00:00.
+
+* since 1980 only 8 mins progression was made.
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot2 <- ggplot(data, aes(x = newdate, y = log(all_minute))) +
+  geom_line(color = "blue") +
+  geom_point(color = "blue") +
+  geom_smooth(se = F, color = "red", linetype = "dashed") + 
+  labs(title = "Marathon world record progression",
+       x = "Date",
+       y = "Time (log(minutes))",
+       caption = "source = https://en.wikipedia.org/wiki/Marathon_world_record_progression") +
+  geom_hline(yintercept =  log(2*60)) +
+  theme_light()
+```
